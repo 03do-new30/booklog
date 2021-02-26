@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="content-container">
+
+    <div class="booklist-grid">
+        <div></div>
+        <div>
+            <a href="{% url 'finder' %}"><button id="add-btn">◀ 뒤로가기</button></a>
+            <p id="result-title">🔽<strong>{{keyword}}</strong> 검색 결과 <small>(상위 10)</small>🔽</p>
+            <div class="booklist-box">
+                <div id="form-id" class="form-container" style="display: flex; overflow: scroll; overflow-y: hidden;">
+                    {% for result in results %}
+                    <div class="result-container">
+                        <img src="{{result.image}}" alt=""><br>
+                        {% load no_tag %}
+                        <div class="title-info">{{result.title|no_tag}}</div>
+                        작가: {{result.author|no_tag}}<br><br>
+                        출판사: {{result.publisher|no_tag}}<br><br>
+                        출판일: {{result.pubdate|no_tag}}<br><br>
+                        isbn: {{result.isbn|no_tag}}<br><br>
+                        <a href="{{result.link|no_tag}}"><button class="result-btn">책 정보</button></a><br>
+                        <form action="{% url 'new_book' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="text" name="cover" value="{{result.image}}" style="display: none;">
+                            <input type="text" name="title" value="{{result.title|no_tag}}" style="display: none;">
+                            <input type="text" name="author" value="{{result.author|no_tag}}" style="display: none;">
+                            <input type="text" name="publisher" value="{{result.publisher|no_tag}}" style="display: none;">
+                            <input type="text" name="pubdate" value="{{result.pubdate|no_tag}}" style="display: none;">
+                            <input type="text" name="isbn" value="{{result.isbn|no_tag}}" style="display: none;">
+                            <button type="submit">📚책 추가📚</button>
+                        </form>
+                        
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div></div>
+    </div>
+
+</section>
+
+{% endblock %}

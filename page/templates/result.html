@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE HTML>
+<!--
+	Introspect by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+    <title>BOOKLOG</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="inner">
+            <a href="{% url 'home' %}" class="logo">Booklog</a>
+            <nav id="nav">
+                {% if name %}
+                <a href="{% url 'tour' %}">둘러보기</a>
+                <a href="{% url 'mylibrary' %}">내 서재</a>
+                <a href="{% url 'logout' %}">로그아웃</a>
+                {% else %}
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">둘러보기</a>
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">내 서재</a>
+                <a href="{% url 'login' %}">로그인</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+
+
+    <!-- Main -->
+    <section id="main">
+        <div class="inner">
+            <ul class="actions small">
+                <li>
+                    <a href="{% url 'add_book' %}" class="button alt small">↩ 다시 검색</a>
+                </li>
+            </ul>
+
+            <hr>
+
+            <header class="major special">
+                <h1>검색 결과</h1>
+                <p>상위 10개의 검색 결과입니다.</p>
+            </header>
+
+            <section id="three" style="padding-top: 0;">
+                <hr>
+                {% for result in results %}
+                {% load no_tag %}
+                    
+                    {% if forloop.counter == 1 or forloop.counter == 4 or forloop.counter == 7 or forloop.counter == 10 %}
+                    <div class="inner" style="text-align: center;">
+                    {% endif %}
+                        
+                        <article>
+                            <div class="content">
+                                <img src="{{result.image}}" alt="">
+                                <header>
+                                    <h5>{{result.title|no_tag}}</h5>
+                                </header>
+                                <p>작가: {{result.author|no_tag}}<br>
+                                    출판사: {{result.publisher|no_tag}}<br>
+                                    출판일: {{result.pubdate|no_tag}}<br>
+                                    isbn: {{result.isbn|no_tag}}<br></p>
+                                <ul class="actions">
+                                    <li><a target="_blank" rel="noopener noreferrer" href="{{result.link|no_tag}}" class="button alt">상세</a></li>
+                                </ul>
+                                <form action="{% url 'new_book' %}" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="text" name="cover" value="{{result.image}}" style="display: none;">
+                                    <input type="text" name="title" value="{{result.title|no_tag}}" style="display: none;">
+                                    <input type="text" name="author" value="{{result.author|no_tag}}" style="display: none;">
+                                    <input type="text" name="publisher" value="{{result.publisher|no_tag}}" style="display: none;">
+                                    <input type="text" name="pubdate" value="{{result.pubdate|no_tag}}" style="display: none;">
+                                    <input type="text" name="isbn" value="{{result.isbn|no_tag}}" style="display: none;">
+                                    <input type="submit" value="추가✔" class="special" />
+                                </form>
+                            </div>
+                        </article>
+
+                    {% if forloop.counter == 3 or forloop.counter == 6 or forloop.counter == 9 or forloop.counter == 10 %} 
+                    </div>
+                    <hr>
+                    {% endif %}
+                    
+                {% endfor %}
+            </section>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <section id="footer">
+        <div class="inner">
+            <div class="copyright">
+                &copy; Untitled Design: <a href="https://templated.co/">TEMPLATED</a>. Images <a
+                    href="https://unsplash.com/">Unsplash</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/skel.min.js' %}"></script>
+    <script src="{% static 'assets/js/util.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

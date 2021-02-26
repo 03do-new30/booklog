@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE HTML>
+<!--
+	Introspect by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+    <title>BOOKLOG</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="inner">
+            <a href="{% url 'home' %}" class="logo">Booklog</a>
+            <nav id="nav">
+                {% if name %}
+                <a href="{% url 'tour' %}">둘러보기</a>
+                <a href="{% url 'mylibrary' %}">내 서재</a>
+                <a href="{% url 'logout' %}">로그아웃</a>
+                {% else %}
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">둘러보기</a>
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">내 서재</a>
+                <a href="{% url 'login' %}">로그인</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+
+    <!-- Banner -->
+    <section id="banner">
+        <div class="inner">
+            <h2>둘러보기: <span><br />
+                    책으로 소통하기</span></h2>
+        </div>
+    </section>
+
+    <!-- Three -->
+    <section id="three">
+        <div class="inner" style="display: flex; flex-direction: column;">
+            <header>
+                <h2>booklogger들이 읽고 있는 책들</h2>
+            </header>
+
+            <p>표지를 클릭하여 다른 사람이 읽고 있는 책을 확인하고 함께 이야기를 나눠 보세요<br>
+                아마 재미있을 겁니다 후후</p>
+
+            <form method="post" action="#" style="margin-bottom: 0;">
+                {% csrf_token %}
+                <div class="field half first">
+                    <label for="search">검색</label>
+                    <input type="text" name="search" id="search" />
+                </div>
+                <div class="field half first">
+                    <label for="" style="visibility: hidden;">hidden</label>
+                    <ul class="actions">
+                        <li><input type="submit" value="검색" class="alt" /></li>
+                    </ul>
+                </div>
+            </form>
+            <hr>
+            {% for book in books %}
+
+            {% if forloop.counter == 1 or forloop.counter == 4 or forloop.counter == 7 %}
+            <div class="inner" style="text-align: center;">
+                {% endif %}
+
+                <article>
+                    <div class="content">
+                        <a href="{% url 'tour_book' book.isbn %}"><img src="{{book.image}}" alt="" style="min-width: 16vh;"></a>
+                        <header>
+                            <h5>{{book.title}}</h5>
+                            <p>
+                                저자: {{book.author}}<br>
+                                출판사: {{book.publisher}}<br>
+                                isbn: {{book.isbn}}
+                            </p>
+                        </header>
+                    </div>
+                </article>
+
+                {% if forloop.counter == 3 or forloop.counter == 6 or forloop.counter == 9 or forloop.last %}
+            </div>
+            <hr>
+            {% endif %}
+
+            {% endfor %}
+            <!--pagination-->
+            <div style="text-align: center;">
+                {% if books.has_previous %}
+                <a href="?page1">⏮</a>
+                <a href="?page={{books.previous_page_number}}">◀</a>
+                {% endif %}
+                <span>{{books.number}}</span>
+                <span>/</span>
+                <span>{{books.paginator.num_pages}}</span>
+                {% if books.has_next %}
+                <a href="?page={{books.next_page_number}}">▶</a>
+                <a href="?page={{books.paginator.num_pages}}">⏭</a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section id="footer">
+        <div class="inner">
+            <div class="copyright">
+                &copy; Untitled Design: <a href="https://templated.co/">TEMPLATED</a>. Images <a
+                    href="https://unsplash.com/">Unsplash</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/skel.min.js' %}"></script>
+    <script src="{% static 'assets/js/util.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

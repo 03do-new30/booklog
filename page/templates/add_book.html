@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE HTML>
+<!--
+	Introspect by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+    <title>BOOKLOG</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+</head>
+
+<body>
+    {% if message %}
+    <script type="text/javascript">
+        alert("이미 등록되어 있는 책입니다.\n같은 책은 중복되어 등록되지 않습니다.\n다시 시도해 주세요.");
+    </script>
+    {% endif %}
+    <!-- Header -->
+    <header id="header">
+        <div class="inner">
+            <a href="{% url 'home' %}" class="logo">Booklog</a>
+            <nav id="nav">
+                {% if name %}
+                <a href="{% url 'tour' %}">둘러보기</a>
+                <a href="{% url 'mylibrary' %}">내 서재</a>
+                <a href="{% url 'logout' %}">로그아웃</a>
+                {% else %}
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">둘러보기</a>
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">내 서재</a>
+                <a href="{% url 'login' %}">로그인</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+
+
+    <!-- Main -->
+    <section id="main">
+        <div class="inner">
+            <ul class="actions small">
+                <li>
+                    <a href="{% url 'mylibrary' %}" class="button alt small">◀</a>
+                </li>
+            </ul>
+
+            <hr>
+
+            <header class="major special">
+                <h1>새 기록 추가</h1>
+                <p>책 검색을 통해 새로운 독서 기록을 추가할 수 있습니다.</p>
+            </header>
+
+            <form method="post" action="{% url 'search' %}">
+                {% csrf_token %}
+                <div>
+                    <input type="radio" id="type-all" name="type" value="type-all" checked>
+                    <label for="type-all">전체 검색</label>
+                    <input type="radio" id="type-titl" name="type" value="type-titl">
+                    <label for="type-titl">책 제목 검색</label>
+                    <input type="radio" id="type-auth" name="type" value="type-auth">
+                    <label for="type-auth">저자명 검색</label>
+                    <input type="radio" id="type-isbn" name="type" value="type-isbn">
+                    <label for="type-isbn">isbn 검색</label>
+                    <input type="radio" id="type-publ" name="type" value="type-publ">
+                    <label for="type-publ">출판사 검색</label>
+                </div>
+                <div class="field half first">
+                    <label for="keyword">책 검색</label>
+                    <input type="text" name="keyword" id="keyword" />
+                </div>
+                <div class="field half first">
+                    <label for="" style="visibility: hidden;">hidden</label>
+                    <ul class="actions">
+                        <li><input type="submit" value="검색" class="alt" /></li>
+                    </ul>
+                </div>
+            </form>
+
+            <label>등록할 책</label>
+            <h4>📚 {{title}}</h4><br>
+
+
+
+            <form method="post" action="{% url 'add_book' %}">
+                {% csrf_token %}
+                <!--hidden form-->
+                <input type="text" name="cover" value="{{cover}}" style="display: none;">
+                <input type="text" name="title" value="{{title}}" style="display: none;">
+                <input type="text" name="author" value="{{author}}" style="display: none;">
+                <input type="text" name="publisher" value="{{publisher}}" style="display: none;">
+                <input type="text" name="pubdate" value="{{pubdate}}" style="display: none;">
+                <input type="text" name="isbn" value="{{isbn}}" style="display: none;">
+                <!--hidden form-->
+                <div class="field half first">
+                    <label for="start">시작 날짜</label>
+                    <input type="date" name="start" id="start" />
+                </div>
+                <div class="field half first">
+                    <label for="end">마친 날짜 (미완료시 생략)</label>
+                    <input type="date" name="end" id="end" />
+                </div>
+                <br>
+                <ul class="actions">
+                    <li><input type="submit" value="📚 새 독서기록 추가하기 📚" class="special" /></li>
+                </ul>
+                <br>
+            </form>
+            <br>
+
+
+            <div>
+                <br>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <section id="footer">
+        <div class="inner">
+            <div class="copyright">
+                &copy; Untitled Design: <a href="https://templated.co/">TEMPLATED</a>. Images <a
+                    href="https://unsplash.com/">Unsplash</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/skel.min.js' %}"></script>
+    <script src="{% static 'assets/js/util.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE HTML>
+<!--
+	Introspect by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+    <title>BOOKLOG</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="inner">
+            <a href="{% url 'home' %}" class="logo">Booklog</a>
+            <nav id="nav">
+                {% if name %}
+                <a href="{% url 'tour' %}">둘러보기</a>
+                <a href="{% url 'mylibrary' %}">내 서재</a>
+                <a href="{% url 'logout' %}">로그아웃</a>
+                {% else %}
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">둘러보기</a>
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">내 서재</a>
+                <a href="{% url 'login' %}">로그인</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+
+    <!-- Banner -->
+    <section id="my-banner">
+        <h2>{{name}}님의 서재</h2>
+        <h4>책 사놓고 안읽는 나는 바보야</h4>
+    </section>
+
+    <!-- Main -->
+    <section id="main">
+        <div class="inner">
+            <ul class="actions small">
+                <li>
+                    <a href="{% url 'add_book' %}" class="button alt small">➕ 새 기록 추가</a>
+                </li>
+            </ul>
+            <hr>
+        </div>
+
+        <div class="inner">
+            <section id="three" style="padding-top: 0;">
+                <header class="major special">
+                    <h2>내 기록들</h2>
+                </header>
+                <hr>
+                {% for book in books %}
+
+                    {% if forloop.counter == 1 or forloop.counter == 4 %}
+                    <div class="inner" style="text-align: center;">
+                    {% endif %}
+                        
+                        <article>
+                            <div class="content">
+                                <a href="{%url 'detail' book.isbn %}"><img src="{{book.image}}" alt=""></a>
+                                <header>
+                                    <h5>{{book.title}}</h5>
+                                </header>
+                                <p>{% if book.start == None%}
+                                    ????
+                                    {% else %}
+                                    {{book.start}}
+                                    {% endif %}
+                                    <br>~<br>
+                                    {% if book.end == None%}
+                                    진행중
+                                    {% else %}
+                                    {{book.end}}
+                                    {% endif %}</p>
+                                <a href="{%url 'detail' book.isbn %}" class="button alt small">🔍상세</a>
+                            </div>
+                        </article>
+
+                    {% if forloop.counter == 3 or forloop.counter == 6 or forloop.last %} 
+                    </div>
+                    <hr>
+                    {% endif %}
+                    
+                {% endfor %}
+                
+                <!--pagination-->
+                <div style="text-align: center;">
+                    {% if books.has_previous %}
+                    <a href="?page1">⏮</a>
+                    <a href="?page={{books.previous_page_number}}">◀</a>
+                    {% endif %}
+                    <span>{{books.number}}</span>
+                    <span>/</span>
+                    <span>{{books.paginator.num_pages}}</span>
+                    {% if books.has_next %}
+                    <a href="?page={{books.next_page_number}}">▶</a>
+                    <a href="?page={{books.paginator.num_pages}}">⏭</a>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <section id="footer">
+        <div class="inner">
+            <div class="copyright">
+                &copy; Untitled Design: <a href="https://templated.co/">TEMPLATED</a>. Images <a
+                    href="https://unsplash.com/">Unsplash</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/skel.min.js' %}"></script>
+    <script src="{% static 'assets/js/util.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

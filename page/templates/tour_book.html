@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE HTML>
+<!--
+	Introspect by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+    <title>BOOKLOG</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="inner">
+            <a href="{% url 'home' %}" class="logo">Booklog</a>
+            <nav id="nav">
+                {% if name %}
+                <a href="{% url 'tour' %}">둘러보기</a>
+                <a href="{% url 'mylibrary' %}">내 서재</a>
+                <a href="{% url 'logout' %}">로그아웃</a>
+                {% else %}
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">둘러보기</a>
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">내 서재</a>
+                <a href="{% url 'login' %}">로그인</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+
+    <!-- Banner -->
+    <section id="banner">
+        <div class="inner">
+            <h2>둘러보기: <span><br />
+                    책으로 소통하기</span></h2>
+        </div>
+    </section>
+
+    <!-- Main -->
+    <section id="main">
+        <div class="inner">
+            <ul class="actions small">
+                <li>
+                    <a href="{% url 'tour' %}" class="button alt small">◀</a>
+                </li>
+            </ul>
+            <hr>
+        </div>
+
+        <div class="inner">
+            <div class="table-wrapper">
+                <table class="alt">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width: 35vh;">
+                                <img src="{{book.image}}" alt=""><br>
+                                <h5>{{book.title}}</h5>
+                                <p style="font-size: 2vh;">
+                                    저자: {{book.author}}<br>
+                                    출판사: {{book.publisher}}<br>
+                                    isbn: {{book.isbn}}
+                                </p>
+                            </td>
+                            <td>
+                                <label style="text-align: left;">booklogger들의 감상</label>
+                                <div class="table-wrapper">
+                                    <table class="alt">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 15vh;">이름</th>
+                                                <th>느낀점</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for comment in comments %}
+                                            {% if comment.2 != None %}
+                                            <tr>
+                                                <td>
+                                                    <h5>{{comment.0}}</h5>
+                                                    <p style="font-size:1.8vh; margin-bottom: 0%;">({{comment.1}})</p>
+                                                </td>
+                                                <td style="font-size:2vh; text-align: left;">{{comment.2}}</td>
+                                            </tr>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <label style="text-align: left;">booklogger들의 평점</label>
+                                ✨<b>{{avg_score}}</b>✨
+                                <br><br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section id="footer">
+        <div class="inner">
+            <div class="copyright">
+                &copy; Untitled Design: <a href="https://templated.co/">TEMPLATED</a>. Images <a
+                    href="https://unsplash.com/">Unsplash</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/skel.min.js' %}"></script>
+    <script src="{% static 'assets/js/util.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

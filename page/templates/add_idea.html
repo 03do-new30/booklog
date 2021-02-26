@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE HTML>
+<!--
+	Introspect by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+    <title>BOOKLOG</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="inner">
+            <a href="{% url 'home' %}" class="logo">Booklog</a>
+            <nav id="nav">
+                {% if name %}
+                <a href="{% url 'tour' %}">둘러보기</a>
+                <a href="{% url 'mylibrary' %}">내 서재</a>
+                <a href="{% url 'logout' %}">로그아웃</a>
+                {% else %}
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">둘러보기</a>
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">내 서재</a>
+                <a href="{% url 'login' %}">로그인</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+
+    <!-- Banner -->
+    <section id="my-banner">
+        <h2>{{name}}님의 서재</h2>
+        <h4>책 사놓고 안읽는 나는 바보야</h4>
+    </section>
+
+    <!-- Main -->
+    <section id="main">
+        <div class="inner">
+            <ul class="actions small">
+                <li>
+                    <a href="{%url 'detail' book_detail.isbn %}" class="button alt small">◀</a>
+                </li>
+            </ul>
+            <hr>
+        </div>
+
+        <div class="inner">
+            <div class="table-wrapper">
+                <table class="alt">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width: 35vh;">
+                                <img src="{{book_detail.image}}" alt=""><br>
+                                <h5>{{book_detail.title}}</h5>
+                                <p style="font-size: 2vh; margin-bottom: 0;">
+                                    {% if book_detail.start == None%}
+                                    ????
+                                    {% else %}
+                                    {{book_detail.start}}
+                                    {% endif %}
+                                    ~
+                                    {% if book_detail.end == None%}
+                                    진행중
+                                    {% else %}
+                                    {{book_detail.end}}
+                                    {% endif %}
+                                </p>
+                            </td>
+                            <td style="text-align: left;">
+                                <h3>느낀점 수정</h3>
+                                <hr>
+                                <form action="{% url 'add_idea' book_detail.isbn %}" method="POST">
+                                    {% csrf_token %}
+                                    <br>
+                                    <textarea name="idea" id="" cols="120" rows="10" style="font-size: 2vh;">{{book_detail.idea}}</textarea><br>
+                                    <button type="submit" class="special">수정</button>
+                                </form>
+                                <hr>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <section id="footer">
+        <div class="inner">
+            <div class="copyright">
+                &copy; Untitled Design: <a href="https://templated.co/">TEMPLATED</a>. Images <a
+                    href="https://unsplash.com/">Unsplash</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/skel.min.js' %}"></script>
+    <script src="{% static 'assets/js/util.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

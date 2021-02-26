@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOOKLOG</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <!--상단바-->
+    <header>
+        <nav id="gnb">
+            <div></div>
+            <div class="gnb-list-wrap">
+                <div class="logo">
+                    <a href="{% url 'home' %}">BOOKLOG</a>
+                </div>
+                <div class="gnb-list-inner">
+                    <li>
+                        <a href="{% url 'logout' %}">로그아웃</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mylibrary' %}">내 서재</a>
+                    </li>
+                    <li>
+                        <a href="#">둘러보기</a>
+                    </li>
+                </div>
+            </div>
+            <div></div>
+        </nav>
+    </header>
+
+    <section class="main-container">
+        <div></div>
+        {% block content %}
+        {% endblock %}
+        <div></div>
+    </section>
+
+    <footer>
+        Copyright ⓒ booklog. All Rights Reserved.
+    </footer>
+
+</body>
+
+</html>

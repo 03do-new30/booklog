@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="content-container">
+
+    <div class="library-header-grid">
+        <div></div>
+        <div class="library-header-container">
+            <div class="library-header-content">
+                <p style="font-size: 2.5vh; margin-bottom: 1vh; margin-top: 0;">
+                    {{name}}님의 서재
+                </p>
+                <small>책 속에 길이 있다.</small>
+            </div>
+        </div>
+        <div></div>
+    </div>
+
+    <div class="booklist-grid">
+        <div></div>
+        <div class="booklist-container">
+            <a href="{% url 'mylibrary' %}"><button id="add-btn">◀ 뒤로가기</button></a>
+
+            <div class="library-box">
+                <div class="bookinfo-container" style="display: flex; flex-direction: column; width: 15%; justify-content: center; text-align: center; font-size: 1.8vh; margin: 2%; border: 1px solid lightsalmon;">
+                    <div style="width: 82; height: 116;"><img src="{{book_detail.image}}" alt=""></div>
+                    <div style="padding:1%; margin:1%;"><strong>{{book_detail.title}}</strong></div>
+                    <div style="background-color: lightgrey; font-size: 1.5vh; margin-top: 5%; border-radius: 15px;">
+                        <br>
+                        {% if book_detail.start == None%}
+                        ????
+                        {% else %}
+                        {{book_detail.start}}
+                        {% endif %}<br>~<br>
+                        {% if book_detail.end == None%}
+                        진행중
+                        {% else %}
+                        {{book_detail.end}}
+                        {% endif %}
+                        <br>
+                        <br>
+                        <a><button style="font-size: 1.5vh">edit</button></a>
+                        <br>
+                    </div>
+                </div>
+
+                <div class="booklog-container" style="width: 100%; margin: 0% 2% 0% 0%; padding: 2%; font-size: 2vh;">
+                    <div class="sentence-box" style="background-color: lightyellow; padding:1%; margin:1%;">
+                        🔖<strong>기억에 남는 구절</strong>
+                        <div style="overflow-y: scroll; font-size: 1.8vh; height:7vh; padding: 1%;">
+                            {% for sentence in sentences %}
+                            <div>
+                                <strong>{{sentence}}</strong> ({{sentence.page}}p.)_{{sentence.date}}
+                                <a href="{% url 'mod_sentence' sentence.id %}"><button>edit</button></a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <a href="{% url 'add_sentence' book_detail.isbn %}"><button style="border-radius: 0%;">➕</button></a>
+                    </div>
+                    <div class="idea-box" style="background-color: lightyellow; padding:2%; margin:1%;">
+                        💭<strong>느낀점</strong>
+                        <a href="{% url 'add_idea' book_detail.isbn %}"><btn id="add-btn" style="border: 1px solid gainsboro">🖋편집</btn></a>
+                        <div style="margin-top: 1%;">
+                            {% if book_detail.idea == None %}
+                                아직 느낀점이 등록되지 않았습니다🤔
+                            {% else %}
+                                {% if too_long %}
+                                    {{short_idea}} ... <a href="{% url 'idea_detail' book_detail.isbn %}" style="color: indianred;">(more)</a>
+                                {% else %}
+                                    {{book_detail.idea}}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="score-box" style="background-color: lightyellow; padding:2%;margin:1%;">
+                        ✨<strong>평점</strong>
+                        <a href="{% url 'add_score' book_detail.isbn %}"><btn id="add-btn" style="border: 1px solid gainsboro">수정</btn></a>
+                        <div style="margin-top: 1%;">
+                            {% if book_detail.score == None %}
+                                아직 평점이 등록되지 않았습니다🤔
+                            {% else %}
+                                {{book_detail.score}}
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    
+                    
+
+                </div>
+                
+            </div>
+            
+            <div></div>
+        </div>
+</section>
+
+{% endblock %}

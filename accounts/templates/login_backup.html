@@ -1,0 +1,26 @@
+{% extends 'accounts_base.html'%}
+{% load static %}
+
+{% block content %}
+<p class="title">BOOKLOG</p>
+<small class="sub">일상이 되는 독서기록</small>
+<div class="login-box">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <label class="login-label" for="id">ID</label>
+        <input class="login-input" type="text" id="id" name="id">
+        <br>
+        <label class="login-label" for="pw">PW</label>
+        <input class="login-input" type="password" id="pw" name="pw">
+        <br>
+        <button class="login-btn" type="submit">로그인</button>
+    </form>
+    <a href="{% url 'signup' %}"><button class="login-btn">회원가입</button></a>
+</div>
+{% if messages %}
+        {% for message in messages %}
+        <strong>{{ message.tags }}!</strong>
+        <small>{{ message.message }}</small>
+        {% endfor %}
+{% endif %}
+{% endblock %}

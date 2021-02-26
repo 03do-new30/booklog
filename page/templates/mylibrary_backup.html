@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="content-container">
+
+    <div class="library-header-grid">
+        <div></div>
+        <div class="library-header-container">
+            <div class="library-header-content">
+                <p style="font-size: 2.5vh; margin-bottom: 1vh; margin-top: 0;">
+                    {{name}}님의 서재
+                </p>
+                <small>책 속에 길이 있다.</small>
+            </div>
+        </div>
+        <div></div>
+    </div>
+
+    <div class="booklist-grid">
+        <div></div>
+        <div class="booklist-container">
+            <a href="{% url 'add_book' %}"><button id="add-btn">➕ 📚새 기록 추가</button></a>
+
+            <div class="library-box">
+                {% for book in books %}
+                <div class="book-img-container">
+                    <a href="{%url 'detail' book.isbn %}"><img src="{{book.image}}" alt="book image" width="120px" height="174px"></a>
+                    <div class="title-info">
+                        {{book.title}}
+                    </div>
+                    <div class="date-info">
+                        {% if book.start == None%}
+                        ????
+                        {% else %}
+                        {{book.start}}
+                        {% endif %}<br>~<br>
+                        {% if book.end == None%}
+                        진행중
+                        {% else %}
+                        {{book.end}}
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% endfor %}
+                
+            </div>
+            <div class="page-container">
+                {% if books.has_previous %}
+                <a href="?page1">⏮</a>
+                <a href="?page={{books.previous_page_number}}">◀</a>
+                {% endif %}
+                <span>{{books.number}}</span>
+                <span>/</span>
+                <span>{{books.paginator.num_pages}}</span>
+                {% if books.has_next %}
+                <a href="?page={{books.next_page_number}}">▶</a>
+                <a href="?page={{books.paginator.num_pages}}">⏭</a>
+                {% endif %}
+            </div>
+            <div></div>
+        </div>
+</section>
+
+{% endblock %}

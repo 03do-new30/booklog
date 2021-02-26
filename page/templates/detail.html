@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE HTML>
+<!--
+	Introspect by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+    <title>BOOKLOG</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="inner">
+            <a href="{% url 'home' %}" class="logo">Booklog</a>
+            <nav id="nav">
+                {% if name %}
+                <a href="{% url 'tour' %}">둘러보기</a>
+                <a href="{% url 'mylibrary' %}">내 서재</a>
+                <a href="{% url 'logout' %}">로그아웃</a>
+                {% else %}
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">둘러보기</a>
+                <a href="{% url 'login' %}" onclick="alert('로그인 후 이용 가능한 서비스입니다.')">내 서재</a>
+                <a href="{% url 'login' %}">로그인</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+
+    <!-- Banner -->
+    <section id="my-banner">
+        <h2>{{name}}님의 서재</h2>
+        <h4>책 사놓고 안읽는 나는 바보야</h4>
+    </section>
+
+    <!-- Main -->
+    <section id="main">
+        <div class="inner">
+            <ul class="actions small">
+                <li>
+                    <a href="{% url 'mylibrary' %}" class="button alt small">◀</a>
+                </li>
+            </ul>
+            <hr>
+        </div>
+
+        <div class="inner">
+            <div class="table-wrapper">
+                <table class="alt">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width: 35vh;">
+                                <img src="{{book_detail.image}}" alt=""><br>
+                                <h5>{{book_detail.title}}</h5>
+                                <p style="font-size: 2vh; margin-bottom: 0;">
+                                {% if book_detail.start == None%}
+                                ????
+                                {% else %}
+                                {{book_detail.start}}
+                                {% endif %}
+                                ~
+                                {% if book_detail.end == None%}
+                                진행중
+                                {% else %}
+                                {{book_detail.end}}
+                                {% endif %}
+                                </p>
+                                <br>
+                                <a href="" class="button alt small">수정</a>
+                            </td>
+                            <td>
+                                <!--기억에 남는 구절-->
+                                <label style="text-align: left;">기억에 남는 구절</label>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center;">구절</th>
+                                                <th style="text-align: center;">페이지</th>
+                                                <th style="text-align: center;">등록일</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for sentence in sentences %}
+                                            <tr>
+                                                <td style="border-right: none; border-left: none; font-size: 1.9vh;">
+                                                    {{sentence}}
+                                                </td>
+                                                <td style="border-right: none; border-left: none; font-size: 1.9vh; width: 10vh;">
+                                                    {{sentence.page}}
+                                                </td>
+                                                <td style="border-right: none; border-left: none; font-size: 1.9vh; width: 20vh;">
+                                                    {{sentence.date}}
+                                                </td>
+                                                <td style="border-right: none; border-left: none; width: 10vh;">
+                                                    <a href="{% url 'mod_sentence' sentence.id %}" class="button alt small">수정</a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                            <tr>
+                                                <td colspan="4" style="border-left: none; border-right: none;border-bottom: none;">
+                                                    <a href="{% url 'add_sentence' book_detail.isbn %}" class="button alt fit">추가</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!--느낀점-->
+                                <label style="text-align: left;">느낀점</label>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center;">느낀점</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="border-right: none; border-left: none; font-size: 1.9vh;">
+                                                    {% if book_detail.idea == None %}
+                                                        아직 느낀점이 등록되지 않았습니다🤔
+                                                    {% else %}
+                                                        {% if too_long %}
+                                                            {{short_idea}} ... <a href="{% url 'idea_detail' book_detail.isbn %}"><b>(more)</b></a>
+                                                        {% else %}
+                                                            {{book_detail.idea}}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </td>
+                                                <td style="border-right: none; border-left: none; width: 10vh;">
+                                                    <a href="{% url 'add_idea' book_detail.isbn %}" class="button alt small">수정</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!--평점-->
+                                <label style="text-align: left;">평점</label>
+                                <p style="text-align: left;">
+                                {% if book_detail.score == None %}
+                                    아직 평점이 등록되지 않았습니다🤔
+                                {% else %}
+                                    ✨ <strong>{{book_detail.score}}</strong> ✨
+                                {% endif %}
+                                <br><br>
+                                <a href="{% url 'add_score' book_detail.isbn %}" class="button alt">수정</a>
+                                </p>
+
+                                <br>
+                                <hr>
+                                <div style="text-align: right;">
+                                <a href="" class="button special">✖ 기록 전체 삭제</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <section id="footer">
+        <div class="inner">
+            <div class="copyright">
+                &copy; Untitled Design: <a href="https://templated.co/">TEMPLATED</a>. Images <a
+                    href="https://unsplash.com/">Unsplash</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/skel.min.js' %}"></script>
+    <script src="{% static 'assets/js/util.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>
